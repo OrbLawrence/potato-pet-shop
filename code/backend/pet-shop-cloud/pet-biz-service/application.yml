@@ -1,0 +1,66 @@
+server:
+  port: 9002
+
+spring:
+  application:
+    name: pet-biz-service
+  main:
+    allow-circular-references: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST:127.0.0.1}:${DB_PORT:3306}/${DB_NAME:pet_shop}?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${DB_USERNAME:petshop}
+    password: ${DB_PASSWORD:change-me}
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+        ip: ${SERVICE_IP:127.0.0.1}
+        group: DEFAULT_GROUP
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.petshop.biz.entity
+  configuration:
+    map-underscore-to-camel-case: true
+
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 3000
+        readTimeout: 5000
+        loggerLevel: full
+
+pet:
+  jwt:
+    secret: ${PET_JWT_SECRET:change-me-to-a-random-secret-at-least-32-bytes}
+    expiration-millis: ${PET_JWT_EXPIRATION_MILLIS:86400000}
+
+aliyun:
+  oss:
+    endpoint: ${ALIYUN_OSS_ENDPOINT:oss-cn-hangzhou.aliyuncs.com}
+    access-key-id: ${ALIYUN_OSS_ACCESS_KEY_ID:your-access-key-id}
+    access-key-secret: ${ALIYUN_OSS_ACCESS_KEY_SECRET:your-access-key-secret}
+    bucket-name: ${ALIYUN_OSS_BUCKET_NAME:your-bucket}
+    upload-prefix: ${ALIYUN_OSS_UPLOAD_PREFIX:uploads/}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.petshop.biz: INFO
+    com.petshop.biz.client: DEBUG

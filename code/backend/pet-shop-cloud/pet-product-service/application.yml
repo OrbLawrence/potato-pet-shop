@@ -1,0 +1,65 @@
+server:
+  port: 9003
+
+spring:
+  application:
+    name: pet-product-service
+  main:
+    allow-circular-references: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST:127.0.0.1}:${DB_PORT:3306}/${DB_NAME:pet_shop}?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${DB_USERNAME:petshop}
+    password: ${DB_PASSWORD:change-me}
+  redis:
+    host: ${REDIS_HOST:127.0.0.1}
+    port: ${REDIS_PORT:6380}
+    database: ${REDIS_DB:6}
+    timeout: 3000ms
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+        ip: ${SERVICE_IP:127.0.0.1}
+        group: DEFAULT_GROUP
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.petshop.product.entity
+  configuration:
+    map-underscore-to-camel-case: true
+
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 3000
+        readTimeout: 5000
+        loggerLevel: full
+
+pet:
+  jwt:
+    secret: ${PET_JWT_SECRET:change-me-to-a-random-secret-at-least-32-bytes}
+    expiration-millis: ${PET_JWT_EXPIRATION_MILLIS:86400000}
+  shop:
+    product-cache-ttl-seconds: ${PRODUCT_CACHE_TTL_SECONDS:600}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.petshop.product: INFO
+    com.petshop.product.client: DEBUG

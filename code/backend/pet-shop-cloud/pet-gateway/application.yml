@@ -1,0 +1,65 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: pet-gateway
+  main:
+    web-application-type: reactive
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+        group: DEFAULT_GROUP
+        ip: ${SERVICE_IP:127.0.0.1}
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+      routes:
+        - id: pet-user-service
+          uri: lb://pet-user-service
+          predicates:
+            - Path=/login,/change-password,/customer/**,/employee/**,/user/info,/user/profile/**,/user/recharge/**
+        - id: pet-biz-service
+          uri: lb://pet-biz-service
+          predicates:
+            - Path=/store/**,/category/**,/pet/**,/dashboard/**,/upload/**,/user/shop/stores
+        - id: pet-product-service
+          uri: lb://pet-product-service
+          predicates:
+            - Path=/product/**,/product-order/**,/user/shop/products/**,/user/shop/orders/**
+        - id: pet-ai-service
+          uri: lb://pet-ai-service
+          predicates:
+            - Path=/ai/**
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        cors-configurations:
+          '[/**]':
+            allowed-origin-patterns: ${CORS_ALLOWED_ORIGINS:http://localhost:3000}
+            allowed-methods: "*"
+            allowed-headers: "*"
+            allow-credentials: true
+            max-age: 3600
+      httpclient:
+        response-timeout: 180s
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+pet:
+  jwt:
+    secret: ${PET_JWT_SECRET:change-me-to-a-random-secret-at-least-32-bytes}
+    expiration-millis: ${PET_JWT_EXPIRATION_MILLIS:86400000}
+
+logging:
+  level:
+    com.petshop.gateway: INFO
+    org.springframework.cloud.gateway: INFO

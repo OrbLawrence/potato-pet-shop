@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.petshop.product.mapper.ProductOrderMapper">
+
+    <resultMap id="ProductOrderResult" type="com.petshop.product.entity.ProductOrder">
+        <id property="id" column="id"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="customerName" column="customer_name"/>
+        <result property="storeId" column="store_id"/>
+        <result property="storeName" column="store_name"/>
+        <result property="amount" column="amount"/>
+        <result property="paymentChannel" column="payment_channel"/>
+        <result property="status" column="status"/>
+        <result property="verificationCode" column="verification_code"/>
+        <result property="transactionNo" column="transaction_no"/>
+        <result property="createTime" column="create_time"/>
+        <result property="payTime" column="pay_time"/>
+        <result property="completeTime" column="complete_time"/>
+    </resultMap>
+
+    <resultMap id="ProductOrderItemResult" type="com.petshop.product.entity.ProductOrderItem">
+        <id property="id" column="id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="productId" column="product_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="productImage" column="product_image"/>
+        <result property="price" column="price"/>
+        <result property="quantity" column="quantity"/>
+        <result property="subtotal" column="subtotal"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.petshop.product.entity.ProductOrder" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO product_order
+            (order_no, customer_id, store_id, amount, payment_channel, status, verification_code,
+             transaction_no, create_time, pay_time)
+        VALUES
+            (#{orderNo}, #{customerId}, #{storeId}, #{amount}, #{paymentChannel}, #{status},
+             #{verificationCode}, #{transactionNo}, #{createTime}, #{payTime})
+    </insert>
+
+    <insert id="insertItem" parameterType="com.petshop.product.entity.ProductOrderItem" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO product_order_item
+            (order_id, product_id, product_name, product_image, price, quantity, subtotal)
+        VALUES
+            (#{orderId}, #{productId}, #{productName}, #{productImage}, #{price}, #{quantity}, #{subtotal})
+    </insert>
+
+    <select id="page" resultMap="ProductOrderResult">
+        SELECT o.*, c.name AS customer_name, s.name AS store_name
+        FROM product_order o
+        LEFT JOIN customer c ON o.customer_id = c.id
+        LEFT JOIN store s ON o.store_id = s.id
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (o.order_no LIKE CONCAT('%', #{keyword}, '%')
+                    OR o.verification_code LIKE CONCAT('%', #{keyword}, '%')
+                    OR c.name LIKE CONCAT('%', #{keyword}, '%')
+                    OR s.name LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+            <if test="status != null and status != ''">
+                AND o.status = #{status}
+            </if>
+        </where>
+        ORDER BY o.create_time DESC, o.id DESC
+    </select>
+
+    <select id="listByCustomerId" resultMap="ProductOrderResult">
+        SELECT o.*, c.name AS customer_name, s.name AS store_name
+        FROM product_order o
+        LEFT JOIN customer c ON o.customer_id = c.id
+        LEFT JOIN store s ON o.store_id = s.id
+        WHERE o.customer_id = #{customerId}
+        ORDER BY o.create_time DESC, o.id DESC
+    </select>
+
+    <select id="getById" resultMap="ProductOrderResult">
+        SELECT o.*, c.name AS customer_name, s.name AS store_name
+        FROM product_order o
+        LEFT JOIN customer c ON o.customer_id = c.id
+        LEFT JOIN store s ON o.store_id = s.id
+        WHERE o.id = #{id}
+    </select>
+
+    <select id="listItems" resultMap="ProductOrderItemResult">
+        SELECT * FROM product_order_item WHERE order_id = #{orderId} ORDER BY id ASC
+    </select>
+
+    <select id="countByVerificationCode" resultType="int">
+        SELECT COUNT(*) FROM product_order WHERE verification_code = #{verificationCode}
+    </select>
+
+    <update id="complete">
+        UPDATE product_order
+        SET status = 'completed', complete_time = NOW()
+        WHERE id = #{id} AND status = 'paid'
+    </update>
+
+</mapper>

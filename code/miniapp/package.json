@@ -1,0 +1,23 @@
+{
+  "name": "pet-shop-miniapp",
+  "version": "1.0.0",
+  "description": "土豆宠物之家微信小程序用户端（uni-app + Vue 3）",
+  "scripts": {
+    "dev:mp-weixin": "uni -p mp-weixin",
+    "build:mp-weixin": "uni build -p mp-weixin"
+  },
+  "dependencies": {
+    "@dcloudio/uni-app": "3.0.0-5030420261029002",
+    "@dcloudio/uni-mp-weixin": "3.0.0-5030420261029002",
+    "vue": "^3.4.21"
+  },
+  "devDependencies": {
+    "@dcloudio/vite-plugin-uni": "3.0.0-5030420261029002",
+    "sass": "^1.77.8",
+    "vite": "^5.2.8"
+  },
+  "overrides": {
+    "@dcloudio/uni-cloud": "3.0.0-5030420261029001",
+    "@dcloudio/uni-mp-compiler": "3.0.0-5030420261029001"
+  }
+}

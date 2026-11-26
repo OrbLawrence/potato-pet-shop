@@ -1,0 +1,127 @@
+{
+  "pages": [
+    {
+      "path": "pages/login/index",
+      "style": {
+        "navigationBarTitleText": "登录",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/home/index",
+      "style": {
+        "navigationBarTitleText": "土豆宠物之家"
+      }
+    },
+    {
+      "path": "pages/shop/index",
+      "style": {
+        "navigationBarTitleText": "商品购买"
+      }
+    },
+    {
+      "path": "pages/ai/index",
+      "style": {
+        "navigationBarTitleText": "AI宠物专家"
+      }
+    },
+    {
+      "path": "pages/profile/index",
+      "style": {
+        "navigationBarTitleText": "个人管理"
+      }
+    },
+    {
+      "path": "pages/pet/list",
+      "style": {
+        "navigationBarTitleText": "萌宠浏览"
+      }
+    },
+    {
+      "path": "pages/pet/detail",
+      "style": {
+        "navigationBarTitleText": "萌宠详情"
+      }
+    },
+    {
+      "path": "pages/store/list",
+      "style": {
+        "navigationBarTitleText": "门店浏览"
+      }
+    },
+    {
+      "path": "pages/store/detail",
+      "style": {
+        "navigationBarTitleText": "门店详情"
+      }
+    },
+    {
+      "path": "pages/recharge/index",
+      "style": {
+        "navigationBarTitleText": "账户充值"
+      }
+    },
+    {
+      "path": "pages/recharge/records",
+      "style": {
+        "navigationBarTitleText": "充值记录"
+      }
+    },
+    {
+      "path": "pages/profile/info",
+      "style": {
+        "navigationBarTitleText": "个人信息"
+      }
+    },
+    {
+      "path": "pages/profile/change-password",
+      "style": {
+        "navigationBarTitleText": "修改密码"
+      }
+    },
+    {
+      "path": "pages/about/index",
+      "style": {
+        "navigationBarTitleText": "关于我们"
+      }
+    },
+    {
+      "path": "pages/shop/orders",
+      "style": {
+        "navigationBarTitleText": "我的商品订单"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "土豆宠物之家",
+    "navigationBarBackgroundColor": "#FDF3E3",
+    "backgroundColor": "#FFF8EF",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#9B8574",
+    "selectedColor": "#E8873A",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "black",
+    "custom": true,
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "主页"
+      },
+      {
+        "pagePath": "pages/shop/index",
+        "text": "商品购买"
+      },
+      {
+        "pagePath": "pages/ai/index",
+        "text": "AI助手"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "个人信息"
+      }
+    ]
+  }
+}

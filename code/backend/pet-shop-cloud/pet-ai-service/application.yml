@@ -1,0 +1,36 @@
+server:
+  port: 9004
+
+spring:
+  application:
+    name: pet-ai-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+        ip: ${SERVICE_IP:127.0.0.1}
+        group: DEFAULT_GROUP
+
+dify:
+  chatflow:
+    base-url: ${DIFY_BASE_URL:https://dify.example.com/v1}
+    api-key: ${DIFY_API_KEY:your-dify-api-key}
+    timeout-seconds: ${DIFY_TIMEOUT_SECONDS:120}
+
+pet:
+  jwt:
+    secret: ${PET_JWT_SECRET:change-me-to-a-random-secret-at-least-32-bytes}
+    expiration-millis: ${PET_JWT_EXPIRATION_MILLIS:86400000}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.petshop.ai: INFO

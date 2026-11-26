@@ -1,0 +1,50 @@
+# 土豆宠物之家 AI 宠物专家 Chatflow 参考配置
+# 该文件用于人工对照配置，具体节点以 Dify 画布为准。
+
+app:
+  name: AI宠物专家
+  mode: chatflow
+  description: 基于土豆宠物之家知识库的智能问答助手
+
+nodes:
+  - id: start
+    type: start
+    variables:
+      - name: sys.query
+        type: paragraph
+        label: 用户问题
+
+  - id: knowledge_retrieval
+    type: knowledge-retrieval
+    dataset:
+      name: 土豆宠物之家知识库
+    retrieval:
+      top_k: 4
+      score_threshold: 0
+
+  - id: llm
+    type: llm
+    model:
+      provider: deepseek
+      name: deepseek-chat
+    prompt: |
+      你是土豆宠物之家的 AI 宠物专家。
+      请严格依据以下知识库资料回答用户问题。
+
+      知识库资料：
+      {{#context#}}
+
+      用户问题：
+      {{#sys.query#}}
+
+  - id: answer
+    type: answer
+    output: "{{#llm.text#}}"
+
+edges:
+  - source: start
+    target: knowledge_retrieval
+  - source: knowledge_retrieval
+    target: llm
+  - source: llm
+    target: answer
